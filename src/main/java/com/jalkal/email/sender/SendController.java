@@ -25,8 +25,6 @@ public class SendController {
         .append("-----------------------\n");
 
         System.out.print(emailContent.toString());
-        if(!emailSender.send(emailContent.toString())){
-            throw new Exception("No se ha podido enviar el email");
-        }
+        emailSender.send(emailContent.toString());
     }
 }

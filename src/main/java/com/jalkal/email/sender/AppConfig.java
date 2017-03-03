@@ -3,6 +3,7 @@ package com.jalkal.email.sender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Async;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -42,8 +43,9 @@ public class AppConfig {
         properties.put("mail.smtp.port", "587");
 
         return new EmailSender() {
+            @Async
             @Override
-            public boolean send(String content) {
+            public void send(String content) {
                 try {
                     Session session = Session.getInstance(properties,
                             new javax.mail.Authenticator() {
@@ -61,9 +63,7 @@ public class AppConfig {
                     Transport.send(message);
                 }catch(Exception e){
                     e.printStackTrace();
-                    return false;
                 }
-                return true;
             }
         };
     }
