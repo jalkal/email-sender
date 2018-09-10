@@ -1,33 +1,41 @@
 package com.jalkal.email.sender;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import io.undertow.Undertow;
+import io.undertow.server.HttpHandler;
+import io.undertow.server.HttpServerExchange;
+import io.undertow.server.handlers.form.FormData;
+import io.undertow.server.handlers.form.FormParserFactory;
+import io.undertow.util.Headers;
 
-import java.util.concurrent.Executor;
-
-/**
- * Created by user on 01/03/2017.
- */
-@SpringBootApplication
-@EnableAsync
-public class Application extends AsyncConfigurerSupport {
+public class Application {
 
     public static void main(String[] args) {
 
-        SpringApplication.run(Application.class, args);
-    }
+        EmailSender emailSender = new EmailSenderImpl("", "", "", "", "");
+        Undertow server = Undertow.builder()
+                .addHttpListener(8082, "localhost")
+                .setHandler(new HttpHandler() {
+                    @Override
+                    public void handleRequest(final HttpServerExchange exchange) throws Exception {
+                        FormData formData = FormParserFactory.builder().build().createParser(exchange).parseBlocking();
+                        String name = formData.getFirst("name").getValue();
+                        String email = formData.getFirst("email").getValue();
+                        String phone = formData.getFirst("phone").getValue();
+                        String message = formData.getFirst("message").getValue();
 
-    @Override
-    public Executor getAsyncExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
-        executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("EmailSender-");
-        executor.initialize();
-        return executor;
+                        StringBuilder emailContent = new StringBuilder();
+
+                        emailContent.append("\n===== Mensaje recibido =======\n")
+                                .append("Nombre: ").append(name).append("\n")
+                                .append("Email: ").append(email).append("\n")
+                                .append("Telefono: ").append(phone).append("\n")
+                                .append("Mensaje: ").append(message).append("\n")
+                                .append("-----------------------\n");
+
+                        System.out.print(emailContent.toString());
+                        emailSender.send(emailContent.toString());
+                    }
+                }).build();
+        server.start();
     }
 }
