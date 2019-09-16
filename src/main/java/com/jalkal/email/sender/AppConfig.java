@@ -3,13 +3,12 @@ package com.jalkal.email.sender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.Async;
 
-import javax.mail.*;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 
 /**
@@ -24,46 +23,35 @@ public class AppConfig {
     @Value("${email.password}")
     private String password;
 
-    @Value("${email.from}")
-    private String from;
-
-    @Value("${email.to}")
-    private String to;
-
     @Value("${email.subject}")
     private String subject;
 
     @Bean
     public EmailSender emailSender(){
 
-        Properties properties = new Properties();
+        Properties properties = System.getProperties();
+        properties.put("mail.smtp.port", "587");
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
 
-        return new EmailSender() {
-            @Async
-            @Override
-            public void send(String content) {
-                try {
-                    Session session = Session.getInstance(properties,
-                            new javax.mail.Authenticator() {
-                                protected PasswordAuthentication getPasswordAuthentication() {
-                                    return new PasswordAuthentication(username, password);
-                                }
-                            });
+        return (replyTo, content) -> {
+            try {
+                Session session = Session.getDefaultInstance(properties, null);
 
-                    Message message = new MimeMessage(session);
-                    message.setFrom(new InternetAddress(from));
-                    message.setRecipients(Message.RecipientType.TO,
-                            InternetAddress.parse(to));
-                    message.setSubject(subject);
-                    message.setText(content);
-                    Transport.send(message);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
+                MimeMessage mimeMessage = new MimeMessage(session);
+                mimeMessage.setReplyTo((new InternetAddress[]{new InternetAddress(replyTo)}));
+                mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress("eva.h.pelu@gmail.com"));
+                mimeMessage.addRecipient(Message.RecipientType.BCC, new InternetAddress("jalcalde@gmail.com"));
+                mimeMessage.setSubject(subject);
+                mimeMessage.setContent(content, "text/html");
+
+                Transport transport = session.getTransport("smtp");
+
+                transport.connect("smtp.gmail.com", username, password);
+                transport.sendMessage(mimeMessage, mimeMessage.getAllRecipients());
+                transport.close();
+            }catch(Exception e){
+                e.printStackTrace();
             }
         };
     }
