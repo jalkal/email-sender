@@ -37,7 +37,6 @@ public class AppConfig {
         return (replyTo, content) -> {
             try {
                 Session session = Session.getDefaultInstance(properties, null);
-
                 MimeMessage mimeMessage = new MimeMessage(session);
                 mimeMessage.setReplyTo((new InternetAddress[]{new InternetAddress(replyTo)}));
                 mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress("eva.h.pelu@gmail.com"));

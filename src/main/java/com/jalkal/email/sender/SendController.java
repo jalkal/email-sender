@@ -26,6 +26,6 @@ public class SendController {
             .append("-----------------------\n");
 
         System.out.print(emailContent.toString());
-        emailSender.send(email, emailContent.toString());
+        emailSender.send(email, emailContent.toString().replace("\n", "<br>"));
     }
 }

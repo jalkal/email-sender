@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="94c4856a-25ed-40f7-9185-326afd9feabb" name="Default" comment="">
+    <list default="true" id="94c4856a-25ed-40f7-9185-326afd9feabb" name="Default" comment="update spring version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jalkal/email/sender/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jalkal/email/sender/AppConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jalkal/email/sender/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jalkal/email/sender/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/jalkal/email/sender/EmailSender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jalkal/email/sender/EmailSender.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/jalkal/email/sender/SendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/jalkal/email/sender/SendController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
@@ -117,6 +116,14 @@
       <option name="presentableId" value="Default" />
       <updated>1488405751721</updated>
     </task>
+    <task id="LOCAL-00001" summary="update spring version">
+      <created>1568669014556</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1568669014556</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -131,5 +138,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="update spring version" />
+    <option name="LAST_COMMIT_MESSAGE" value="update spring version" />
   </component>
 </project>
